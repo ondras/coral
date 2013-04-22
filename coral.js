@@ -1,12 +1,11 @@
-var Coral = OZ.Class();
-Coral.prototype.init = function(e) {
-	this._button = OZ.Event.target(e);
+var Coral = function(e) {
+	this._button = e.target;
 	this._buttonValue = this._button.innerHTML;
 	this._button.innerHTML = "0";
 	this._button.disabled = true;
 	
-	this._size = [parseInt(OZ.$("width").value), parseInt(OZ.$("height").value)];
-	var canvas = OZ.$("canvas");
+	this._size = [parseInt(document.querySelector("#width").value), parseInt(document.querySelector("#height").value)];
+	var canvas = document.querySelector("canvas");
 	canvas.width = this._size[0];
 	canvas.height = this._size[1];
 	this._context = canvas.getContext("2d");
@@ -17,11 +16,24 @@ Coral.prototype.init = function(e) {
 	this._simulate();
 }
 
+Coral.prototype.handleEvent = function(e) {
+	if (typeof(e.data) == "number") {
+		this._button.innerHTML = e.data + " remaining";
+		return;
+	}
+	
+	this._button.disabled = false;
+	this._button.innerHTML = this._buttonValue;
+	
+	this._data = e.data;
+	this._draw();
+}
+
 Coral.prototype._draw = function() {
 	var id = this._context.createImageData(this._size[0], this._size[1]);
 	var index = 0;
-	var color = parseInt(OZ.$("color").value);
-	var age = parseInt(OZ.$("age").value)* 4 / 3;
+	var color = parseInt(document.querySelector("#color").value);
+	var age = parseInt(document.querySelector("#age").value)* 4 / 3;
 	
 	for (var j=0;j<this._size[1];j++) {
 		for (var i=0;i<this._size[0];i++) {
@@ -64,41 +76,15 @@ Coral.prototype._simulate = function() {
 	this._draw();
 
 	this._worker = new Worker("worker.js");
-	OZ.Event.add(this._worker, "message", this._response.bind(this));
+	this._worker.addEventListener("message", this);
 	
-	var rounds = parseInt(OZ.$("age").value);
+	var rounds = parseInt(document.querySelector("#age").value);
 	this._worker.postMessage({rounds:rounds, data:this._data});
-}
-
-Coral.prototype._response = function(e) {
-	if (typeof(e.data) == "number") {
-		this._button.innerHTML = e.data;
-		return;
-	}
-	
-	this._button.disabled = false;
-	this._button.innerHTML = this._buttonValue;
-	
-	this._data = e.data;
-	this._draw();
 }
 
 Coral.prototype._initData = function() {
 	var cx = this._size[0]/2;
 	var cy = this._size[1]/2;
-	
-	/*
-	var pool = [];
-	var r = OZ.$("random").value.split("");
-	while (r.length) {
-		var val = r.shift().charCodeAt(0) & 0xFF;
-		var binary = val.toString(2).split("");
-		while (binary.length < 0) { binary.unshift("0"); }
-		while (binary.length) {
-			pool.push(binary.shift() == "1" ? 1 : 0);
-		}
-	}
-	*/
 	
 	for (var i=0;i<this._size[0];i++) {
 		this._data.push([]);
@@ -131,7 +117,7 @@ function hsv2rgb(h,s,v) {
 }
 
 if (window.Worker) {
-	OZ.Event.add(OZ.$("go"), "click", function(e) { new Coral(e); });
+	document.querySelector("#go").addEventListener("click", function(e) { new Coral(e); });
 } else {
 	alert("Web Workers not supported, sorry.");
 }

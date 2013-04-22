@@ -6,7 +6,6 @@ onmessage = function(e) {
 	var w = data1.length;
 	var h = data1[0].length;
 	
-	
 	for (var i=0;i<w;i++) {
 		data2.push([]);
 		for (var j=0;j<h;j++) { data2[i].push(0); }
