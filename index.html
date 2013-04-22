@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title></title>
+	<script type="text/javascript" src="oz.js"></script>
+	<style type="text/css">
+		body {
+			font-family: verdana;
+		}
+		
+		td:first-child, legend {
+			font-weight: bold;
+		}
+		
+		canvas {
+			border: 1px solid black;
+		}
+		
+		button {
+			font-size: x-large;
+		}
+	</style>
+</head>
+
+<body>
+	<h1>Web Worker Coral generator, based on the <a href="http://en.wikipedia.org/wiki/Conway%27s_Game_of_Life">Game of Life</a></h1>
+	<fieldset>
+		<legend>Configuration</legend>
+		
+		<table>
+			<tbody>
+				<tr>
+					<td>Width</td>
+					<td><input type="text" id="width" size="4" value="400" /> px</td>
+				</tr>
+				<tr>
+					<td>Height</td>
+					<td><input type="text" id="height" size="4" value="300" /> px</td>
+				</tr>
+				<tr>
+					<td>Age</td>
+					<td>
+						<select id="age">
+							<option value="1">1 (newborn)</option>
+							<option value="2">2 (newborn)</option>
+							<option value="5">5 (baby)</option>
+							<option value="20">20 (baby)</option>
+							<option selected="selected" value="50">50 (young)</option>
+							<option value="100">100 (medium)</option>
+							<option value="200">200 (mature)</option>
+							<option value="300">300 (old)</option>
+							<option value="500">500 (extreme)</option>
+							<option value="1000">1000 (extreme)</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>Color</td>
+					<td>
+						<select id="color">
+							<option value="0">Black/White</option>
+							<option value="1">Red</option>
+							<option value="2">Green</option>
+							<option value="3">Blue</option>
+							<option selected="selected" value="4">Hue</option>
+						</select>
+					</td>
+				</tr>
+				<!--
+				<tr>
+					<td>Random pool</td>
+					<td><input type="text" id="random" size="60" value="Lorem ipsum dolor sit amet" /></td>
+				</tr>
+				-->
+			</tbody>
+		</table>
+		
+		<button id="go"><strong>GO!</strong> (might take some time)</button>
+	</fieldset>
+	<canvas id="canvas"></canvas>
+	<script type="text/javascript" src="coral.js"></script>
+</body>
+</html>
